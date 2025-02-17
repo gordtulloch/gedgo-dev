@@ -3,18 +3,14 @@ from django.core.management.base import BaseCommand, CommandError
 from gedgo.gedcom_update import update
 from os import path
 
-
 class Command(BaseCommand):
-    args = '<file_path>'
-    help = 'Adds a newgedcom with a given .ged file.'
+    help = 'Adds a new gedcom with a given .ged file.'
+
+    def add_arguments(self, parser):
+        parser.add_argument('file_path', type=str, help='The path to the .ged file')
 
     def handle(self, *args, **options):
-
-        if not len(args) == 1:
-            raise CommandError('add_gedcom takes only one argument - '
-                               'the path to a gedcom file.')
-
-        file_name = args[0]
+        file_name = options['file_path']
         if not path.exists(file_name):
             raise CommandError('Gedcom file "%s" not found.' % file_name)
         if (not len(file_name) > 4) or (not file_name[-4:] == '.ged'):

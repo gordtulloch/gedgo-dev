@@ -1,6 +1,9 @@
 # Ged-go
 A Gedcom viewer web app.
 
+Original by Greg Thole 2021 Fork by Gord Tulloch 2025
+Objective: Update to new versions of Python and Packages
+
 ## About
 
 Ged-go is a Gedcom file viewer web app written in Django with d3.js

@@ -10,15 +10,15 @@ class GedcomParser(object):
     """
 
     line_re = re.compile(
-        '^(\d{1,2})' +          # Level
-        '(?: @([A-Z\d]+)@)?' +  # Pointer, optional
-        ' _?([A-Z\d_]{3,})' +    # Tag
-        '(?: (.+))?$'           # Value, optional
+        r'^(\d{1,2})' +          # Level
+        r'(?: @([A-Z\d]+)@)?' +  # Pointer, optional
+        r' _?([A-Z\d_]{3,})' +   # Tag
+        r'(?: (.+))?$'           # Value, optional
     )
 
     def __init__(self, file_name_or_stream):
         if isinstance(file_name_or_stream, str):
-            self.file = open(file_name_or_stream, 'rU')
+            self.file = open(file_name_or_stream, 'r', encoding='utf-8-sig')
         else:
             self.file = file_name_or_stream
         self.__parse()
@@ -28,6 +28,7 @@ class GedcomParser(object):
 
         while True:
             line = self.file.readline()
+            print("Line is: "+repr(line.strip()))
             if not line:
                 break
             tag, entry = self.__parse_element(line)
@@ -43,7 +44,8 @@ class GedcomParser(object):
         parsed = self.line_re.findall(line.strip())
 
         if not parsed:
-            raise SyntaxError("Bad GEDCOM syntax in line: '%s'" % line)
+            print("Bad GEDCOM syntax in line: '%s'" % line)
+            exit()
 
         level, pointer, tag, value = parsed[0]
 
@@ -60,7 +62,11 @@ class GedcomParser(object):
         # deeper than that of the current element, and recurse down.
         while True:
             current_position = self.file.tell()
-            next_line = self.file.readline()
+            try:
+                next_line = self.file.readline().strip()
+            except Exception as e:
+                print('Skipping Error '+str(e)+' decoding line: '+repr(next_line))
+                continue
 
             if next_line and int(next_line[:2]) > level:
                 _, child_element = self.__parse_element(next_line)

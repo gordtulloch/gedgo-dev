@@ -1,11 +1,11 @@
-django==3.2.3
-pillow==3.1.1
+django
+pillow
 python-dateutil
 uvicorn
 requests
 mock
 flake8
-anyjson
-dropbox==9.0.0
+dropbox
 django-simple-task
 ASGIMiddlewareStaticFile
+pytz

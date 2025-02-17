@@ -1,11 +1,18 @@
+from pathlib import Path
 import os
 
 # Django settings for gedgo project.
 
+# Global Version Number
+VERSION = '1.0.0'
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/data/db.sqllite',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -14,11 +21,14 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-MEDIA_ROOT = '/app/.files/default/'
-MEDIA_URL = '/gedgo/media/default/'
+# Media files
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATIC_ROOT = '/static/'
-STATIC_URL = '/static/'
+# Static files
+STATIC_URL = os.path.join(BASE_DIR, '/gedgo/static/')
+STATIC_ROOT = os.path.join(BASE_DIR, '/gedgo/staticfiles')
+STATICFILES_DIRS = os.path.join(BASE_DIR, '/gedgo/static/'),
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -31,8 +41,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            '/app/gedgo/templates',
-            '/app/gedgo/templates/default',
+            'BASE_DIR+/gedgo/templates',
+            'BASE_DIR+/gedgo/templates/default',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -82,7 +92,7 @@ INSTALLED_APPS = (
 CACHES = {
     'research_preview': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '/app/.files/research_preview',
+        'LOCATION': os.path.join(BASE_DIR, '.files/research_preview'),
     },
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
@@ -147,11 +157,11 @@ GEDGO_SENDFILE_HEADER = os.environ.get('GEDGO_SENDIFLE_HEADER', 'X-Accel-Redirec
 GEDGO_SENDFILE_PREFIX = os.environ.get('GEDOG_SENDFILE_PREFIX', '/protected/')
 GEDGO_SITE_TITLE = os.environ.get('GEDGO_SITE_TITLE', 'My Genealogy Site')
 GEDGO_RESEARCH_FILE_STORAGE = os.environ.get('GEDGO_RESEARCH_FILE_STORAGE', 'gedgo.storages.FileSystemSearchableStorage')
-GEDGO_RESEARCH_FILE_ROOT = os.environ.get('GEDGO_RESEARCH_FILE_ROOT', '/app/.files/gedcom/')
+GEDGO_RESEARCH_FILE_ROOT = os.environ.get('GEDGO_RESEARCH_FILE_ROOT', os.path.join(BASE_DIR,'/.files/gedcom/'))
 GEDGO_DOCUMENTARY_STORAGE = os.environ.get('GEDGO_DOCUMENTARY_STORAGE', 'gedgo.storages.FileSystemSearchableStorage')
-GEDGO_DOCUMENTARY_ROOT = os.environ.get('GEDGO_DOCUMENTARY_ROOT', '/app/.files/documentaries/')
+GEDGO_DOCUMENTARY_ROOT = os.environ.get('GEDGO_DOCUMENTARY_ROOT', os.path.join(BASE_DIR,'/.files/documentaries/'))
 GEDGO_GEDCOM_FILE_STORAGE = os.environ.get('GEDGO_GEDCOM_FILE_STORAGE', 'gedgo.storages.FileSystemSearchableStorage')
-GEDGO_GEDCOM_FILE_ROOT = os.environ.get('GEDGO_GEDCOM_FILE_ROOT', '/app/.files/research/')
+GEDGO_GEDCOM_FILE_ROOT = os.environ.get('GEDGO_GEDCOM_FILE_ROOT', os.path.join(BASE_DIR,'/.files/research/'))
 GEDGO_SHOW_RESEARCH_FILES = os.environ.get('GEDGO_SHOW_RESEARCH_FILES', 'True') == 'True'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

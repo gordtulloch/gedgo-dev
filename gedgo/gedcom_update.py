@@ -3,7 +3,7 @@ from gedgo.models import Gedcom, Person, Family, Note, Document, Event
 
 from django.core.files.storage import default_storage
 from django.db import transaction
-from django.utils.datetime_safe import date
+from datetime import date
 from django.utils import timezone
 from datetime import datetime
 from re import findall

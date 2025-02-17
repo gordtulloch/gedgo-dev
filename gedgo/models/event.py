@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.datetime_safe import date
+from datetime import date
 
 
 class Event(models.Model):
